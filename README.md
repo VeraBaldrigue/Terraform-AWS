@@ -1,4 +1,4 @@
-# Terraform for AWS  > :construction: Projeto em construção :construction:
+# Terraform AWS  > :construction: Projeto em construção :construction:
 ## IAAC (Infra As A Code)
 
 - `S3`: ![Badge em Desenvolvimento](http://img.shields.io/static/v1?label=STATUS&message=CONCLUÍDO&color=blue&style=for-the-badge)

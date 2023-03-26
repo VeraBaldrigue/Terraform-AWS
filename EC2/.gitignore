@@ -1,6 +1,7 @@
 # Local .terraform directories
 .terraform/*
 terraform.tfstate.backup
+terraform.tfstate
 
 # Crash log files
 crash.log

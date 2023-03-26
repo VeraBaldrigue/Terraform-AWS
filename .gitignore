@@ -2,8 +2,12 @@
 S3/.terraform/*
 EC2/.terraform/*
 S3-import/.terraform/*
-terraform.tfstate
-terraform.tfstate.backup
+S3/terraform.tfstate
+S3/terraform.tfstate.backup
+EC2/terraform.tfstate
+EC2/terraform.tfstate.backup
+S3-import/terraform.tfstate
+S3-import/terraform.tfstate.backup
 
 # Crash log files
 crash.log

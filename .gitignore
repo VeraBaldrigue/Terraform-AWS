@@ -1,5 +1,7 @@
 # Local .terraform directories
-.terraform/*
+S3/.terraform/*
+EC2/.terraform/*
+S3-import/.terraform/*
 terraform.tfstate
 terraform.tfstate.backup
 

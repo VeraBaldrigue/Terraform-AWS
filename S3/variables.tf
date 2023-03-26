@@ -2,9 +2,10 @@ variable "tags" {
   type        = map(string)
   description = "aws s3 tags"
   default = {
-    variable-var1 = "first-bucket-Vera"
-    variable-var2 = "Dev"
-    variable-var3 = "ManagedBy-Terraform"
+    "ManagedBy" = "Terraform"
+    "Owned"         = "Vera Baldrigue"
+    "ManagedBy"     = "Terraform"
+    "Ambiente" = "Dev"
   }
 }
   variable "tagsi" {
@@ -14,5 +15,14 @@ variable "tags" {
       "Test_Import"   = "Curso_Terraform"
       "ManagedBy"     = "Terraform"
       "Imported_into" = "03/03/2023"
+    }
+  }
+
+    variable "tagstfstate" {
+    type        = map(string)
+    description = "aws s3 tfstate tags"
+    default = {
+      "TFstate"   = "Curso_Terraform"
+      "ManagedBy"     = "Terraform"
     }
   }

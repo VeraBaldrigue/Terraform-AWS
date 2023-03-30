@@ -26,14 +26,9 @@ resource "aws_s3_object" "my-object" {
   etag         = filemd5("${local.dir}${local.fileup}") # Hash para identificar alteração no arquivo
 }
 
-resource "aws_s3_bucket" "my-bucket-tfstate" {
-  bucket = "bucket-vera-tfstate"
-  tags = merge(var.tagstfstate, local.common_tags)
-}
-
-resource "aws_s3_bucket_acl" "my-bucket-tfstate-acl" {
-  bucket = aws_s3_bucket.my-bucket-tfstate.id
-  acl    = "private"
+resource "aws_s3_object" "my-folder" {
+  bucket = aws_s3_bucket.my-bucket.bucket
+  key    = "my-folder" # Criando pasta 'my-folder' no bucket 'my-bucket'
 }
 
 data "aws_iam_policy_document" "my-iam-policy" {
@@ -58,6 +53,6 @@ data "aws_iam_policy_document" "my-iam-policy" {
 }
 
 resource "aws_s3_bucket_policy" "my-object-policy" {
-  # bucket = aws_s3_bucket.my-bucket.id
+  bucket = aws_s3_bucket.my-bucket.id
   policy = data.aws_iam_policy_document.my-iam-policy.json
 }

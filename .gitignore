@@ -1,16 +1,26 @@
 # Local .terraform directories
-S3/.terraform/*
-EC2/.terraform/*
-S3-import/.terraform/*
+S3/.terraform/
+S3/.terraform.lock.hcl
 S3/terraform.tfstate
 S3/terraform.tfstate.backup
+
+EC2/.terraform/
+EC2/.terraform.lock.hcl
 EC2/terraform.tfstate
 EC2/terraform.tfstate.backup
+
+S3-import/.terraform/
+S3-import/.terraform.lock.hcl
 S3-import/terraform.tfstate
 S3-import/terraform.tfstate.backup
 
+S3-tfstate/.terraform/
+S3-tfstate/.terraform.lock.hcl
+S3-tfstate/terraform.tfstate
+S3-tfstate/terraform.tfstate.backup
+
 # Crash log files
-#crash.log
+crash.log
 
 # Ignore any .tfvars files that are generated automatically for each Terraform run. Most
 # .tfvars files are managed as part of configuration and so should be included in

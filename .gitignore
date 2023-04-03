@@ -3,6 +3,7 @@ S3/.terraform/
 S3/.terraform.lock.hcl
 S3/terraform.tfstate
 S3/terraform.tfstate.backup
+S3/terraform.tfvars
 
 EC2/.terraform/
 EC2/.terraform.lock.hcl

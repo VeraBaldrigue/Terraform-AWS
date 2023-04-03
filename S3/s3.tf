@@ -31,20 +31,46 @@ resource "aws_s3_object" "my-folder" {
   key    = "my-folder" # Criando pasta 'my-folder' no bucket 'my-bucket'
 }
 
+#
+# Data source definindo 'Resource policy' com vários 'Principals'
+#
 data "aws_iam_policy_document" "my-iam-policy" {
   statement {
     principals {
-      #      type        = "AWS"   ==> Incompatível com aws_s3_bucket_public_access_block
-      #      identifiers = ["*"]   ==> Incompatível com aws_s3_bucket_public_access_block
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
+      # 
+      # Outros exemplos de 'type' x 'identifiers'
+      #
+      # type        = "AWS"   
+      # identifiers = ["arn:aws:iam::065992551625:user/veraiam"]   
+      #
+      # type        = "AWS"   
+      # identifiers = ["*"]    -- Grant anonymous permissions
+      #
+      # type        = "CanonicalUser"
+      # identifiers = ["85c7424416dacca1d27496e33af638d3e7250e45d749f1065f26e54f5683z999"]
+      # 
+      # type        = "Federated"
+      # identifiers = ["accounts.google.com"]
+    }
+    effect = "Deny"
+    actions = [
+      "s3:GetObject",
+    ]
+    resources = [
+      aws_s3_bucket.my-bucket.arn,
+      "${aws_s3_bucket.my-bucket.arn}/*",
+    ]
+  }
+  statement {
+    principals {
       type        = "Service"
       identifiers = ["firehose.amazonaws.com"]
     }
-
     actions = [
-      "s3:GetObject",
       "s3:ListBucket",
     ]
-
     resources = [
       aws_s3_bucket.my-bucket.arn,
       "${aws_s3_bucket.my-bucket.arn}/*",
@@ -52,7 +78,7 @@ data "aws_iam_policy_document" "my-iam-policy" {
   }
 }
 
-resource "aws_s3_bucket_policy" "my-object-policy" {
+resource "aws_s3_bucket_policy" "my-bucket-policy" {
   bucket = aws_s3_bucket.my-bucket.id
   policy = data.aws_iam_policy_document.my-iam-policy.json
 }

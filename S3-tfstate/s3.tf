@@ -1,11 +1,18 @@
 resource "aws_s3_bucket" "my-bucket-tfstate" {
   bucket = "bucket-vera-tfstate"
-  tags = merge(var.tagstfstate, local.common_tags)
+  tags   = merge(var.tagstfstate, local.common_tags)
 }
 
 resource "aws_s3_bucket_acl" "my-bucket-tfstate-acl" {
   bucket = aws_s3_bucket.my-bucket-tfstate.id
   acl    = "private"
+}
+
+resource "aws_s3_bucket_versioning" "my-bucket-tfstate-versioning" {
+  bucket = aws_s3_bucket.my-bucket-tfstate.id
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
 
 resource "aws_s3_bucket_public_access_block" "my-bucket-public-access-block" {
@@ -20,22 +27,19 @@ resource "aws_s3_bucket_public_access_block" "my-bucket-public-access-block" {
 data "aws_iam_policy_document" "my-iam-policy" {
   statement {
     principals {
-      type        = "Service"
-      identifiers = ["firehose.amazonaws.com"]
+      type        = "AWS"
+      identifiers = ["*"]
     }
-
     actions = [
       "s3:GetObject",
       "s3:ListBucket",
     ]
-
     resources = [
       aws_s3_bucket.my-bucket-tfstate.arn,
       "${aws_s3_bucket.my-bucket-tfstate.arn}/*",
     ]
   }
 }
-
 resource "aws_s3_bucket_policy" "my-object-policy" {
   bucket = aws_s3_bucket.my-bucket-tfstate.id
   policy = data.aws_iam_policy_document.my-iam-policy.json

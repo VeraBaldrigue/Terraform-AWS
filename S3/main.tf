@@ -8,7 +8,7 @@ terraform {
 
   backend "s3" {
     bucket = "bucket-vera-tfstate"
-    key    = "S3"
+    key    = "S3-tfstate/S3-terraform.tfstate"
     region = "us-east-1"
   }
 }
@@ -16,3 +16,5 @@ terraform {
 provider "aws" {
   region = "us-east-1"
 }
+
+data "aws_caller_identity" "currentuser" {}

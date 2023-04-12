@@ -16,8 +16,10 @@ resource "aws_s3_bucket_public_access_block" "my-bucket-public-access-block" {
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
+  depends_on = [
+    data.aws_iam_policy_document.my-iam-policy
+  ]
 }
-
 resource "aws_s3_object" "my-object" {
   bucket       = aws_s3_bucket.my-bucket.bucket
   key          = "pasta-s3/my-object"          # Nome do arquivo no bucket
@@ -38,7 +40,7 @@ data "aws_iam_policy_document" "my-iam-policy" {
   statement {
     principals {
       type        = "Service"
-      identifiers = ["lambda.amazonaws.com"]
+      identifiers = ["firehose.amazonaws.com"]
       # 
       # Outros exemplos de 'type' x 'identifiers'
       #
@@ -65,8 +67,8 @@ data "aws_iam_policy_document" "my-iam-policy" {
   }
   statement {
     principals {
-      type        = "Service"
-      identifiers = ["firehose.amazonaws.com"]
+      type        = "*"
+      identifiers = ["*"]
     }
     actions = [
       "s3:ListBucket",
@@ -75,6 +77,16 @@ data "aws_iam_policy_document" "my-iam-policy" {
       aws_s3_bucket.my-bucket.arn,
       "${aws_s3_bucket.my-bucket.arn}/*",
     ]
+    condition {
+      test     = "StringLike"
+      variable = "s3:prefix"
+
+      values = [
+        "",
+        "my-folder/",
+        "my-folder/&{aws:username}/",
+      ]
+    }
   }
 }
 

@@ -15,19 +15,10 @@ resource "aws_s3_bucket_versioning" "my-bucket-tfstate-versioning" {
   }
 }
 
-resource "aws_s3_bucket_public_access_block" "my-bucket-public-access-block" {
-  bucket = aws_s3_bucket.my-bucket-tfstate.id
-
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
-  restrict_public_buckets = true
-}
-
 data "aws_iam_policy_document" "my-iam-policy" {
   statement {
     principals {
-      type        = "AWS"
+      type        = "*"
       identifiers = ["*"]
     }
     actions = [
@@ -40,7 +31,18 @@ data "aws_iam_policy_document" "my-iam-policy" {
     ]
   }
 }
-resource "aws_s3_bucket_policy" "my-object-policy" {
+resource "aws_s3_bucket_policy" "my-bucket-policy" {
   bucket = aws_s3_bucket.my-bucket-tfstate.id
   policy = data.aws_iam_policy_document.my-iam-policy.json
+}
+
+resource "aws_s3_bucket_public_access_block" "my-bucket-public-access-block" {
+  bucket                  = aws_s3_bucket.my-bucket-tfstate.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+  depends_on = [
+    aws_s3_bucket_policy.my-bucket-policy
+  ]
 }

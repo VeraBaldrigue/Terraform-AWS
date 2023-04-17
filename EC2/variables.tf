@@ -1,23 +1,30 @@
-variable region {
-    type = string
-    description = "Region onde será criada a máquina virtual"
-    default = "us-east-1"
+variable "env" {
+  type        = string
+  description = "Indica onde será criada a infraestrutura"
+  validation {
+    condition     = var.env == "dev" || var.env == "hom" || var.env == "prod"
+    error_message = "Ambiente informado não existente. Defina o ambiente como: \"dev\" ou \"hom\" ou \"prod\""
+  }
 }
-variable ami {
-    type = string
-    description = "aws ami instance "
-    default = "ami-0dfcb1ef8550277af"
+
+variable "region" {
+  type        = string
+  description = "Region onde será criada a infraestrutura"
 }
-variable instance_type {
-    type = string
-    description = "aws instance type"
-    default = "t2.micro"
+
+variable "instance_ami" {
+  type        = string
+  description = "AWS AMI Instance"
+  validation {
+    condition     = length(var.instance_ami) > 4 && substr(var.instance_ami, 0, 4) == "ami-"
+    error_message = "The instance_ami value must be a valid AMI id, starting with \"ami-\"."
+  }
 }
-variable tags {
-    type = map(string)
-    description = "aws instance tags"
-    default = {    
-    Name = "tag-aws-instance-vera"
-    Finalidade = "curso terraform"
-    }
+
+variable "instance_type_and_number" {
+  type = object({
+    instance_type       = string
+    number_of_instances = number
+  })
+  description = "AWS Instance Type and number of instance to create "
 }

@@ -7,7 +7,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "bucket-vera-tfstate"
+    bucket = "bucket-tfstate-vera"
     key    = "S3-tfstate/S3-terraform.tfstate"
     region = "us-east-1"
   }

@@ -6,10 +6,10 @@ terraform {
     }
   }
 
-  #  backend "s3" {
-  #    bucket = "bucket-vera-tfstate"
-  #    key    = "EC2-tfstate/EC2-terraform.tfstate"
-  #    region = "us-east-1"
+  #backend "s3" {
+  #   bucket = "bucket-tfstate-vera"
+  #   key    = "${var.env}/EC2-tfstate/EC2-terraform.tfstate" não pode ???
+  #   region = "us-east-1"
   #  }
 }
 

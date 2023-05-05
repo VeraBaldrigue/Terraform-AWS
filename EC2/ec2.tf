@@ -3,8 +3,6 @@ resource "aws_instance" "aws-instance-vera" {
   ami           = var.instance_ami
   instance_type = var.instance_type_and_number.instance_type
 
-  # tags = merge(local.common_tags, var.tags)
-
   tags = merge(
     local.common_tags,
     {
